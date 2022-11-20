@@ -24,3 +24,31 @@ https://www.census.gov/economic-indicators/
 
 https://data.worldbank.org/
 
+Game Plan
+
+Basic Skills
+
+  Utilize paper trading and methodologies in "paper" or "dev" enivronment prior to live trades.
+  
+Risk assessement and tolerance
+
+Develop macro bais (Market Ideology)
+
+Pick the market for the trading strategy (Known sector i.e technology vs precious metals)
+
+
+Develop time frame strategy (scalper vs day trader vs buy and hold etc.)
+
+
+
+Defining goals
+
+Establishing Rules and Checklist
+
+  Entry rules- Timing, technical analysis, plan of entry into trade
+
+  Exit rules- when to take profits, trailing stops, limits etc.
+  
+  Check list- reviewing analysis prior to engaging 
+  
+  DOCUMENT ALL RULES. BACKTEST ALL STRATEGIES.  MONITOR AND TRACK ALL PROGRESS
