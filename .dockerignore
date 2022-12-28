@@ -1,0 +1,2 @@
+# these are ignored in sending to the Docker context as part of the build
+/mysql-bind/
