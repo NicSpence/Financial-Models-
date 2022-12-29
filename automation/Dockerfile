@@ -7,7 +7,8 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # https://github.com/nteract/papermill
-RUN pip3 install --no-cache papermill
+# https://docs.celeryq.dev/en/stable/index.html
+RUN pip3 install --no-cache papermill celery
 
 # TODO: implement
 CMD tail -f /dev/null

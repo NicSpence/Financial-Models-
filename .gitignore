@@ -1,5 +1,6 @@
 .env
 /mysql-bind/
+/redis-bind/
 
 *.csv
 *.parquet
