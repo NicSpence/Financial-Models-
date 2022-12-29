@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+  # the backend relational database for all data storage needs
+  mysql:
+    build: ./mysql/
+    hostname: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306/tcp
+    environment:
+      TZ: "America/Denver"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql-bind/:/var/lib/mysql:rw
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+    restart: unless-stopped
+  # a front-end web-ui for development via Jupyter notebooks
+  jupyter:
+    build: ./jupyter/
+    hostname: jupyter
+    container_name: jupyter
+    ports:
+      - 8888:8888/tcp
+    environment:
+      TZ: "America/Denver"
+    volumes:
+      - ./:/home/jovyan/work:rw
+    depends_on:
+      - mysql
+    restart: unless-stopped
+  # an automation pipeline for continuously running data pulls
+  automation:
+    build: ./automation/
+    hostname: automation
+    container_name: automation
+    environment:
+      TZ: "America/Denver"
+    depends_on:
+      - redis
+      - celery-worker
+      - mysql
+    volumes:
+      - ./:/automation/:ro
+    restart: unless-stopped
+  # celery worker for running jobs, can be scaled as needed
+  celery-worker:
+    build: ./celery-worker/
+    hostname: celery-worker
+    container_name: celery-worker
+    environment:
+      TZ: "America/Denver"
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+    depends_on:
+      - redis
+    restart: unless-stopped
+  # backend database and broker for celery
+  redis:
+    build: ./redis/
+    hostname: redis
+    container_name: redis
+    restart: unless-stopped
+    environment:
+      TZ: "America/Denver"
+    # ports:
+    #   - 6379:6379/tcp
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - ./redis-bind/:/data:rw
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+  # celery web-ui for checking on task progress
+  flower:
+    build: ./flower/
+    hostname: flower
+    container_name: flower
+    environment:
+      TZ: "America/Denver"
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      FLOWER_PORT: 5555
+    ports:
+      - 5555:5555/tcp
+    depends_on:
+      - redis
+      - celery-worker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555"]
+      interval: 5s
+    restart: unless-stopped
