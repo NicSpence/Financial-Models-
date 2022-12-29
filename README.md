@@ -43,6 +43,12 @@ Connect via your favorite SQL tool to MySQL
 localhost:3306
 ```
 
+## Debugging
+
+```shell
+docker compose logs -f
+```
+
 ## Teardown
 
 ```shell
