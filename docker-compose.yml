@@ -13,6 +13,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./mysql-bind/:/var/lib/mysql:rw
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
     restart: unless-stopped
   # a front-end web-ui for development via Jupyter notebooks
   jupyter:
@@ -25,6 +28,8 @@ services:
       TZ: "America/Denver"
     volumes:
       - ./:/home/jovyan/work:rw
+    depends_on:
+      - mysql
     restart: unless-stopped
   # an automation pipeline for continuously running data pulls
   automation:
@@ -36,6 +41,7 @@ services:
     depends_on:
       - redis
       - celery-worker
+      - mysql
     volumes:
       - ./:/automation/:ro
     restart: unless-stopped
@@ -46,8 +52,8 @@ services:
     container_name: celery-worker
     environment:
       TZ: "America/Denver"
-      CELERY_BROKER_URL: "redis://redis:6379/0"
-      CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
     depends_on:
       - redis
     restart: unless-stopped
@@ -62,6 +68,9 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes: 
       - ./redis-bind/:/data:rw
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
   # celery web-ui for checking on task progress
   flower:
     build: ./flower/
@@ -69,12 +78,15 @@ services:
     container_name: flower
     environment:
       TZ: "America/Denver"
-      CELERY_BROKER_URL: "redis://redis:6379/0"
-      CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
       FLOWER_PORT: 5555
     ports:
       - 5555:5555/tcp
     depends_on:
       - redis
       - celery-worker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555"]
+      interval: 5s
     restart: unless-stopped
