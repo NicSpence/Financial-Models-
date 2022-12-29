@@ -2,7 +2,7 @@
 
 <h1 align="center">Project Financial Model Dashboard</h1>
 <h3 align="center">Predictive Modeling For Trading Stategies</h3>
-<img align="right" alt="Coding" width="500" src="https://gifdb.com/images/high/stock-market-buy-money-funny-meme-0jl2wq4upqk9vcav.gif">
+<img align="right" alt="Coding" width="400" src="https://gifdb.com/images/high/stock-market-buy-money-funny-meme-0jl2wq4upqk9vcav.gif">
 <h3 align="left">Project Overview:</h3>
 </p> Economic Analysis
 </p> Sector Analysis
