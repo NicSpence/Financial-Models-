@@ -1,105 +1,14 @@
-# Financial-Models
 
-A suite of tools and scripts for financial data and analysis.
 
-## Architecture
-
-* `Jupyter` for exploratory analysis and a common `Python` environment
-* `MySQL` relational database for data storage
-* `Celery` and `Flower` for scaling data engineering and task automation using
-`Redis` as the primary broker and database backend
-
-## Requirements
-
-* [Docker](https://www.docker.com/)
-* [docker-compose](https://docs.docker.com/compose/)
-
-## Setup
-
-* Copy `.env-copy` to `.env` and edit as needed
-
-## Building
-
-```shell
-docker compose build --pull
-```
-
-## Running
-
-```shell
-docker compose up -d --build
-```
-
-Check the status with `docker ps`
-
-View the following pages in your favorite web-browser:
-
-* [Jupyter - http://localhost:8888](http://localhost:8888)
-* [Celery via Flower - http://localhost:5555](http://localhost:5555)
-
-Connect via your favorite SQL tool to MySQL
-
-```shell
-localhost:3306
-```
-
-TODO: add Squirrel instructions, possibly phpmyadmin?
-
-## Debugging
-
-```shell
-docker compose logs -f
-```
-
-## Teardown
-
-```shell
-docker compose down -v
-```
-
-## Sites for data collection
-
-https://www.nasdaq.com/market-activity/stocks/screener
-
-https://go.factset.com/marketplace/catalog?select-one-filters=eyJwcm9kdWN0LWNhdGVnb3J5IjoiQVBJIn0%3D
-
-https://www.morningstar.com/stocks
-
-https://www.google.com/finance/
-
-https://www.sec.gov/edgar
-
-Metals
-
-https://www.kitco.com/market/
-
-Economics and data
-
-https://fred.stlouisfed.org/
-
-https://www.census.gov/economic-indicators/
-
-https://data.worldbank.org/
-
-## Game Plan
-
-### Basic Skills
-
-* Utilize paper trading and methodologies in "paper" or "dev" enivronment prior to live trades.
-  
-Risk assessement and tolerance
-
-Develop macro bais (Market Ideology)
-
-Pick the market for the trading strategy (Known sector i.e technology vs precious metals)
-
-Develop time frame strategy (scalper vs day trader vs buy and hold etc.)
-
-Defining goals
-
-### Establishing Rules and Checklist
-
-* Entry rules- Timing, technical analysis, plan of entry into trade
-* Exit rules- when to take profits, trailing stops, limits etc.
-* Check list- reviewing analysis prior to engaging
-* DOCUMENT ALL RULES. BACKTEST ALL STRATEGIES.  MONITOR AND TRACK ALL PROGRESS
+<h1 align="center">Project Financial Model Dashboard</h1>
+<h3 align="center">Predictive Modeling For Trading Stategies</h3>
+<img align="right" alt="Coding" width="500" src="https://gifdb.com/images/high/stock-market-buy-money-funny-meme-0jl2wq4upqk9vcav.gif">
+<h3 align="left">Project Overview:</h3>
+</p> Economic Analysis
+</p> Sector Analysis
+</p> Technical Analysis
+</p> ML Models
+<p align="left">
+<h3 align="left">Strategy:</h3>
+<h3 align="left">Languages and Tools:</h3>
+<p align="left"> <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://www.php.net" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="php" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://www.rust-lang.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/rust/rust-plain.svg" alt="rust" width="40" height="40"/> </a> <a href="https://www.tensorflow.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="tensorflow" width="40" height="40"/> </a> </p>
