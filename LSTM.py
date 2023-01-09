@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
-
 
 import numpy as np
 import pandas as pd
@@ -10,9 +8,6 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
 import matplotlib.pyplot as plt
-
-
-# In[12]:
 
 
 def percentageChange(baseValue, currentValue):
@@ -38,15 +33,8 @@ def reverseTransformToPercentageChange(baseValue, x):
     return x_transform
 
 
-# In[13]:
-
-
-df = pd.read_csv('Insert the CSV for S&P Here')
+df = pd.read_csv('SPXH')
 baseValue = df['Close'][0]
-
-
-# In[14]:
-
 
 data = df.sort_index(ascending=True, axis=0)
 new_data = pd.DataFrame(index=range(0,len(df)),columns=['Date', 'Close'])
@@ -62,9 +50,6 @@ dataset = new_data.values
 train, valid = train_test_split(dataset, train_size=0.99, test_size=0.01, shuffle=False)
 
 
-# In[15]:
-
-
 prediction_window_size = 60
 x_train, y_train = [], []
 for i in range(prediction_window_size,len(train)):
@@ -73,9 +58,6 @@ for i in range(prediction_window_size,len(train)):
 x_train = np.array(x_train, dtype=float)
 y_train = np.array(y_train, dtype=float)
 x_train = np.reshape(x_train, (x_train.shape[0],x_train.shape[1],1))
-
-
-# In[16]:
 
 
 model = Sequential()
@@ -125,9 +107,6 @@ future_closing_price = model.predict(X_predict)
 
 train, valid = train_test_split(new_data, train_size=0.99, test_size=0.01, shuffle=False)
 date_index = pd.to_datetime(train.index)
-
-
-# In[20]:
 
 
 x_days = (date_index - pd.to_datetime('2018-08-01')).days
