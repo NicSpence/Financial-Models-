@@ -41,7 +41,7 @@ def reverseTransformToPercentageChange(baseValue, x):
 # In[13]:
 
 
-df = pd.read_csv('C:/Users/Nicolas/PycharmProjects/LTSM S&P/NFLX.csv')
+df = pd.read_csv('Insert the CSV for S&P Here')
 baseValue = df['Close'][0]
 
 
@@ -101,24 +101,14 @@ model.add(Dense(units = 1))
 model.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
 
-# In[17]:
-
-
 # Fitting the RNN to the Training set
 model.fit(x_train, y_train, epochs = 75, batch_size = 32)
-
-
-# # Wilder, use the code below, if you recieve an object error,  then reassign the data type. options are float or int.
-
-# In[18]:
 
 
 [print(i.shape, i.dtype) for i in model.inputs]
 [print(o.shape, o.dtype) for o in model.outputs]
 [print(l.name, l.input_shape, l.dtype) for l in model.layers]
 
-
-# In[19]:
 
 
 total_prediction_days = 365
@@ -182,16 +172,9 @@ plt.show()
 
 # # optional pass the predicted prices through a pandas data frame to export results to csv for further analysis.
 
-# In[21]:
-
 
 df = pd.DataFrame(future_closing_price_transform)
-df.to_csv('C:/Users/Nicolas/PycharmProjects/LTSM S&P/test.csv')
+df.to_csv('Test file name')
 # print(df)
-
-
-# In[ ]:
-
-
 
 
