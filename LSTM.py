@@ -10,6 +10,13 @@ from keras.layers import Dense, Dropout, LSTM
 import matplotlib.pyplot as plt
 
 
+# Configurable inputs
+total_prediction_days = 365
+prediction_window_size = 60
+epochs = 70
+prediction_for_days = 1500
+
+
 def percentageChange(baseValue, currentValue):
     return((float(currentValue)-baseValue) / abs(baseValue)) *100.00
 
@@ -33,7 +40,7 @@ def reverseTransformToPercentageChange(baseValue, x):
     return x_transform
 
 
-df = pd.read_csv('SPXH')
+df = pd.read_csv('SPXH.csv')
 baseValue = df['Close'][0]
 
 data = df.sort_index(ascending=True, axis=0)
@@ -50,7 +57,6 @@ dataset = new_data.values
 train, valid = train_test_split(dataset, train_size=0.99, test_size=0.01, shuffle=False)
 
 
-prediction_window_size = 60
 x_train, y_train = [], []
 for i in range(prediction_window_size,len(train)):
     x_train.append(dataset[i-prediction_window_size:i,0])
@@ -84,16 +90,17 @@ model.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
 
 # Fitting the RNN to the Training set
-model.fit(x_train, y_train, epochs = 75, batch_size = 32)
+model.fit(x_train, y_train, epochs=epochs, batch_size=32, workers=8, use_multiprocessing=True)
 
 
 [print(i.shape, i.dtype) for i in model.inputs]
 [print(o.shape, o.dtype) for o in model.outputs]
 [print(l.name, l.input_shape, l.dtype) for l in model.layers]
 
+# serialize the model to disk for later
+model.save("model_serialized.h5")
 
 
-total_prediction_days = 365
 inputs = new_data[-total_prediction_days:].values
 inputs = inputs.reshape(-1,1)
 
@@ -111,7 +118,6 @@ date_index = pd.to_datetime(train.index)
 
 x_days = (date_index - pd.to_datetime('2018-08-01')).days
 
-prediction_for_days = 1500
 future_closing_price = future_closing_price[:prediction_for_days]
 
 x_predict_future_dates = np.asarray(pd.RangeIndex(start=x_days[-1] + 1, stop=x_days[-1] + 1 + (len(future_closing_price))))
@@ -139,21 +145,22 @@ plt.plot(future_date_index,future_closing_price_transform, label='Predicted Clos
 plt.suptitle('Stock Market Predictions', fontsize=16)
 
 # set the title of the graph window
-fig = plt.gcf()
-fig.canvas.set_window_title('Stock Market Predictions')
+#fig = plt.gcf()
+#fig.canvas.set_window_title('Stock Market Predictions')
 
 #display the legends
 plt.legend()
 
 #display the graph
-plt.show()
+#plt.show()
+plt.savefig("stock_market_predictions.png")
 
 
 # # optional pass the predicted prices through a pandas data frame to export results to csv for further analysis.
 
 
 df = pd.DataFrame(future_closing_price_transform)
-df.to_csv('Test file name')
+df.to_csv('future_closing_price_transform.csv')
 # print(df)
 
 
