@@ -11,12 +11,32 @@ services:
     environment:
       TZ: "America/Denver"
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: finance
     volumes:
       - ./mysql-bind/:/var/lib/mysql:rw
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 5s
     restart: unless-stopped
+  # a web-ui frontend to MySQL
+  phpmyadmin:
+    build: ./phpmyadmin/
+    hostname: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8080:80/tcp
+    environment:
+      TZ: "America/Denver"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+    restart: unless-stopped
+    depends_on:
+      - mysql
   # a front-end web-ui for development via Jupyter notebooks
   jupyter:
     build: ./jupyter/

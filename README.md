@@ -19,6 +19,7 @@
 * `MySQL` relational database for data storage
 * `Celery` and `Flower` for scaling data engineering and task automation using
 `Redis` as the primary broker and database backend
+* `phpmyadmin` for a web-ui into `MySQL`
 
 ## Requirements
 
@@ -47,14 +48,13 @@ View the following pages in your favorite web-browser:
 
 * [Jupyter - http://localhost:8888](http://localhost:8888)
 * [Celery via Flower - http://localhost:5555](http://localhost:5555)
+* [phpmyadmin - http://localhost:8080](http://localhost:8080)
 
 Connect via your favorite SQL tool to MySQL
 
 ```shell
 localhost:3306
 ```
-
-TODO: add Squirrel instructions, possibly phpmyadmin?
 
 ## Debugging
 
