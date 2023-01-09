@@ -8,13 +8,19 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
 import matplotlib.pyplot as plt
+from sklearn.model_selection import GridSearchCV
+import tensorflow as tf
+from keras.wrappers.scikit_learn import KerasRegressor
 
 
 # Configurable inputs
 total_prediction_days = 365
 prediction_window_size = 60
-epochs = 70
+epochs = [10, 20, 30, 40, 50, 60, 70]
+batch_size = [50, 100, 200]
 prediction_for_days = 1500
+# for reproducibility
+tf.random.set_seed(1)
 
 
 def percentageChange(baseValue, currentValue):
@@ -66,31 +72,41 @@ y_train = np.array(y_train, dtype=float)
 x_train = np.reshape(x_train, (x_train.shape[0],x_train.shape[1],1))
 
 
-model = Sequential()
-#first LSTM layer
-model.add(LSTM(units = 50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
-model.add(Dropout(0.2))
+def create_model():
+    model = Sequential()
+    #first LSTM layer
+    model.add(LSTM(units = 50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
+    model.add(Dropout(0.2))
 
-#second LSTM layer and some Dropout regularisation
-model.add(LSTM(units = 50, return_sequences = True))
-model.add(Dropout(0.2))
+    #second LSTM layer and some Dropout regularisation
+    model.add(LSTM(units = 50, return_sequences = True))
+    model.add(Dropout(0.2))
 
-#third LSTM layer
-model.add(LSTM(units = 50, return_sequences = True))
-model.add(Dropout(0.2))
+    #third LSTM layer
+    model.add(LSTM(units = 50, return_sequences = True))
+    model.add(Dropout(0.2))
 
-#fourth LSTM layer
-model.add(LSTM(units = 50))
-model.add(Dropout(0.2))
+    #fourth LSTM layer
+    model.add(LSTM(units = 50))
+    model.add(Dropout(0.2))
 
-# Adding the output layer
-model.add(Dense(units = 1))
-# Compiling the RNN
-model.compile(optimizer = 'adam', loss = 'mean_squared_error')
+    # Adding the output layer
+    model.add(Dense(units = 1))
+    # Compiling the RNN
+    model.compile(optimizer = 'adam', loss = 'mean_squared_error')
+    
+    return model
 
+model = KerasRegressor(build_fn = create_model, verbose = 1)
 
+param_grid = dict(batch_size=batch_size, epochs=epochs)
+grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=3)
+grid_result = grid.fit(x_train, y_train)
 # Fitting the RNN to the Training set
-model.fit(x_train, y_train, epochs=epochs, batch_size=32, workers=8, use_multiprocessing=True)
+#model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, workers=8, use_multiprocessing=True)
+print("Best grid search params: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+
+model = grid_result.best_estimator_.model
 
 
 [print(i.shape, i.dtype) for i in model.inputs]
