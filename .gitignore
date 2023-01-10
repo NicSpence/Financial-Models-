@@ -4,8 +4,8 @@
 
 *.csv
 *.parquet
-
-
+*.png
+*.h5
 
 
 
