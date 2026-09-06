@@ -6,4 +6,7 @@ RUN pip3 install --no-cache celery[redis]
 
 COPY *.py .
 
-ENTRYPOINT celery -A task worker --autoscale 10 --loglevel=info
+# https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html#starting-the-scheduler
+# if we want to scale this out in the future and have multiple celery workers, we'll
+# need to split out the celery beat service
+ENTRYPOINT celery -A task worker --autoscale 10 --loglevel=info --beat
